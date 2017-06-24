@@ -1,0 +1,22 @@
+[{
+    "post": {
+        "status": 1,
+        "accept_comment": true,
+        "title": "hello world",
+        "tags": [1,2,4]
+    },
+    "categories": [
+        {
+            "name": "aws",
+            "num": 123
+        },
+        {
+            "name": 123,
+            "num": 3.14
+        }
+    ],
+    "url": "http://blog.yudppp.com",
+    "profile_image_url": "http://blog.yudppp.com/img/profile.gif",
+    "comments": []
+}
+]
