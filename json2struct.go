@@ -6,7 +6,6 @@ import (
 	"go/format"
 	"io"
 	"log"
-	"os"
 	"reflect"
 	"sort"
 	"strings"
@@ -25,7 +24,8 @@ const (
 )
 
 const (
-	rootID = "$"
+	rootID            = "$"
+	DefaultStructName = "data"
 )
 
 var debugMode bool
@@ -45,8 +45,11 @@ type Options struct {
 
 func Parse(reader io.Reader, opt Options) string {
 	var input interface{}
-	if err := json.NewDecoder(os.Stdin).Decode(&input); err != nil {
+	if err := json.NewDecoder(reader).Decode(&input); err != nil {
 		panic(err)
+	}
+	if opt.Name == "" {
+		opt.Name = DefaultStructName
 	}
 	opt.Prefix = swag.ToGoName(opt.Prefix)
 	opt.Suffix = swag.ToGoName(opt.Suffix)

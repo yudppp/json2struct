@@ -15,7 +15,7 @@ var (
 	short     = flag.Bool("short", false, "Set short struct name mode")
 	prefix    = flag.String("prefix", "", "Set struct name prefix")
 	suffix    = flag.String("suffix", "", "Set struct name suffix")
-	name      = flag.String("name", "data", "Set struct name")
+	name      = flag.String("name", json2struct.DefaultStructName, "Set struct name")
 )
 
 func main() {
