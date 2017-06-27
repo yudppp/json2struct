@@ -32,4 +32,5 @@ type BlogCategory struct {
 | prefix | Set struct name prefix |
 | suffix | Set struct name suffix |
 | short | Set short struct name mode |
+| local | Use local struct mode |
 | omitempty | Set omitempty mode |

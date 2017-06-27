@@ -63,6 +63,17 @@ type Nest struct {
 	},
 	TestCase{
 		Input:       `{"nest": {"text": "hello"}}`,
+		InputOption: Options{UseLocal: true},
+		Expected: `type data struct {
+	Nest dataNest 'json:"nest"'
+}
+
+type dataNest struct {
+	Text string 'json:"text"'
+}`,
+	},
+	TestCase{
+		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{UseOmitempty: true},
 		Expected: `type Data struct {
 	Nest *DataNest 'json:"nest,omitempty"'

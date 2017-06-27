@@ -38,6 +38,7 @@ func SetDebug(v bool) {
 type Options struct {
 	UseOmitempty   bool
 	UseShortStruct bool
+	UseLocal       bool
 	Name           string
 	Prefix         string
 	Suffix         string
@@ -168,6 +169,9 @@ func NewStructure(spath, name string) *Structure {
 		name = SpathToName(spath, name)
 	}
 	name = fmt.Sprintf("%s%s%s", option.Prefix, swag.ToGoName(name), option.Suffix)
+	if option.UseLocal {
+		name = swag.ToVarName(name)
+	}
 	return &Structure{
 		ID:    spath,
 		Name:  name,
@@ -245,7 +249,7 @@ func (s *Structure) String() string {
 		props[i] = prop.String()
 	}
 	sort.Strings(props)
-	str := fmt.Sprintf("type %s struct{\n%v\n}", swag.ToGoName(s.Name), strings.Join(props, "\n"))
+	str := fmt.Sprintf("type %s struct{\n%v\n}", s.Name, strings.Join(props, "\n"))
 
 	formated, err := format.Source([]byte(str))
 	if err != nil {
