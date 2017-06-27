@@ -136,16 +136,16 @@ type DataCategory struct {
 	URL             string         'json:"url"'
 }
 
+type DataCategory struct {
+	Name interface{} 'json:"name"'
+	Num  float64     'json:"num"'
+}
+
 type DataPost struct {
 	AcceptComment bool   'json:"accept_comment"'
 	Status        int    'json:"status"'
 	Tags          []int  'json:"tags"'
 	Title         string 'json:"title"'
-}
-
-type DataCategory struct {
-	Name interface{} 'json:"name"'
-	Num  float64     'json:"num"'
 }`,
 	},
 	TestCase{
@@ -159,16 +159,16 @@ type DataCategory struct {
 	URL             string        'json:"url"'
 }
 
+type Category struct {
+	Name interface{} 'json:"name"'
+	Num  float64     'json:"num"'
+}
+
 type Post struct {
 	AcceptComment bool   'json:"accept_comment"'
 	Status        int    'json:"status"'
 	Tags          []int  'json:"tags"'
 	Title         string 'json:"title"'
-}
-
-type Category struct {
-	Name interface{} 'json:"name"'
-	Num  float64     'json:"num"'
 }`,
 	},
 }

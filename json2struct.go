@@ -155,8 +155,10 @@ func (w *Walker) walk(spath, name string, data interface{}, parent *Structure) {
 type Structure struct {
 	ID    string
 	Name  string
-	Props []Propety
+	Props Props
 }
+
+type Props []Propety
 
 type Propety struct {
 	Name string
@@ -229,6 +231,7 @@ func (s *Structure) AddPropety(name string, kind reflect.Kind, refs *Structure) 
 		prop.Refs = refs
 	}
 	s.Props = append(s.Props, prop)
+	sort.Sort(s.Props)
 }
 
 func (s *Structure) Output() []string {
@@ -248,7 +251,6 @@ func (s *Structure) String() string {
 	for i, prop := range s.Props {
 		props[i] = prop.String()
 	}
-	sort.Strings(props)
 	str := fmt.Sprintf("type %s struct{\n%v\n}", s.Name, strings.Join(props, "\n"))
 
 	formated, err := format.Source([]byte(str))
@@ -303,6 +305,18 @@ func (p *Propety) String() string {
 		propName = swag.ToVarName(propName)
 	}
 	return fmt.Sprintf("\t%s %s `json:\"%s%s\"`", propName, kind, p.Name, jsonOption)
+}
+
+func (p Props) Len() int {
+	return len(p)
+}
+
+func (p Props) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+
+func (p Props) Less(i, j int) bool {
+	return p[i].Name < p[j].Name
 }
 
 func getType(data interface{}) ObjectType {
