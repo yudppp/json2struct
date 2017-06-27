@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+}
+
+label {
+  font-weight: 100;
+}
+
+code {
+  overflow-x: scroll;
+}
+
+textarea {
+  height: 100px;
+}
+
+.header {
+  padding: 16px 32px;
+  background-color: #0ead9e;
+  color: #fff;
+}
+
+.footer {
+  height: 32px;
+  padding: 0 32px;
+  border-top: 1px solid #ccc;
+}
+
+.column {
+  width: 100%;
+  min-width: 400px;
+  padding: 16px 32px;
+}
+
+@media all and (min-width: 500px) {
+  .wrapper {
+    display: flex;
+  }
+  .column {
+      min-height: calc(100vh - 56px - 32px);
+  }
+}

@@ -44,10 +44,10 @@ type Options struct {
 	Suffix         string
 }
 
-func Parse(reader io.Reader, opt Options) string {
+func Parse(reader io.Reader, opt Options) (string, error) {
 	var input interface{}
 	if err := json.NewDecoder(reader).Decode(&input); err != nil {
-		panic(err)
+		return "", err
 	}
 	if opt.Name == "" {
 		opt.Name = DefaultStructName
@@ -61,7 +61,7 @@ func Parse(reader io.Reader, opt Options) string {
 		b, _ := json.MarshalIndent(walker.structure, "", "  ")
 		walker.logln(string(b))
 	}
-	return walker.output()
+	return walker.output(), nil
 }
 
 type Walker struct {

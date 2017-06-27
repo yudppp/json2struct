@@ -30,6 +30,9 @@ func main() {
 		Suffix:         *suffix,
 		Name:           strings.ToLower(*name),
 	}
-	parsed := json2struct.Parse(os.Stdin, opt)
+	parsed, err := json2struct.Parse(os.Stdin, opt)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(parsed)
 }

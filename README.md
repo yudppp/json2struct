@@ -1,8 +1,14 @@
-## json2struct
+# json2struct
 
 Translate to Golang struct from json
 
-### install
+## Playground
+
+Try playground [https://yudppp.github.io/json2struct](https://yudppp.github.io/json2struct)
+
+## CLI
+
+### Install
 
 ```
 $ go get github.com/yudppp/json2struct/cmd/json2struct

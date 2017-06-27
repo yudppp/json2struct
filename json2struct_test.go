@@ -176,7 +176,7 @@ type Post struct {
 func TestParse(t *testing.T) {
 	for _, v := range testCases {
 		expected := strings.Replace(v.Expected, "'", "`", -1)
-		actual := Parse(strings.NewReader(v.Input), v.InputOption)
+		actual, _ := Parse(strings.NewReader(v.Input), v.InputOption)
 		if actual != expected {
 			t.Errorf("\ngot:\n%v\nwant:\n%v", actual, expected)
 		}
