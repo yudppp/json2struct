@@ -50,7 +50,7 @@ func (p *PageView) Render() *vecty.HTML {
 		elem.Div(
 			prop.Class("wrapper"),
 			elem.Div(
-				prop.Class("column input"),
+				prop.Class("col input"),
 				elem.Div(
 					vecty.Tag("label",
 						vecty.Text("input json"),
@@ -147,7 +147,7 @@ func (p *PageView) Render() *vecty.HTML {
 				),
 			),
 			elem.Div(
-				prop.Class("column output"),
+				prop.Class("col output"),
 				vecty.Tag("label",
 					vecty.Text("output struct"),
 				),

@@ -7,8 +7,17 @@ label {
   font-weight: 200;
 }
 
+pre {
+  margin: 0;
+}
+
 code {
   overflow-x: scroll;
+}
+
+pre, code {
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+    line-height: 1.2;
 }
 
 textarea {
@@ -27,26 +36,27 @@ textarea {
   border-top: 1px solid #ccc;
 }
 
-.column {
-  width: 100%;
+.wrapper {
+  padding: 0 16px;
+}
+
+.col {
+  width: calc(100vw - 64px);
   min-width: 400px;
-  padding: 16px 32px;
+  padding: 16px;
 }
 
 .u-full-width {
   max-width: 100%;
 }
 
-pre, code {
-    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
-    line-height: 1.2;
-}
-
-@media all and (min-width: 500px) {
+@media all and (min-width: 900px) {
   .wrapper {
     display: flex;
+    max-width: 1280px;
+    margin: 0 auto;
   }
-  .column {
-      min-height: calc(100vh - 56px - 32px);
+  .col {
+      min-height: calc(100vh - 56px - 64px);
   }
 }
