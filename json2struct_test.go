@@ -65,11 +65,11 @@ type Nest struct {
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{UseLocal: true},
 		Expected: `type data struct {
-	Nest dataNest 'json:"nest"'
+	nest dataNest 'json:"nest"'
 }
 
 type dataNest struct {
-	Text string 'json:"text"'
+	text string 'json:"text"'
 }`,
 	},
 	TestCase{

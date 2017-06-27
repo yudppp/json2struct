@@ -298,7 +298,11 @@ func (p *Propety) String() string {
 	if option.UseOmitempty {
 		jsonOption = ",omitempty"
 	}
-	return fmt.Sprintf("\t%s %s `json:\"%s%s\"`", swag.ToGoName(p.Name), kind, p.Name, jsonOption)
+	propName := swag.ToGoName(p.Name)
+	if option.UseLocal {
+		propName = swag.ToVarName(propName)
+	}
+	return fmt.Sprintf("\t%s %s `json:\"%s%s\"`", propName, kind, p.Name, jsonOption)
 }
 
 func getType(data interface{}) ObjectType {
