@@ -1,9 +1,10 @@
 body {
   margin: 0;
+  font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 }
 
 label {
-  font-weight: 100;
+  font-weight: 200;
 }
 
 code {
@@ -30,6 +31,15 @@ textarea {
   width: 100%;
   min-width: 400px;
   padding: 16px 32px;
+}
+
+.u-full-width {
+  max-width: 100%;
+}
+
+pre, code {
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+    line-height: 1.2;
 }
 
 @media all and (min-width: 500px) {

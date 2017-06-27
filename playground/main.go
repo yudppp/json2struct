@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"time"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -18,7 +19,7 @@ func main() {
 		Input: `{
 	"text": "Hello",
 	"categories": [
-		{"name": "k8s"}
+		{"id": 1,"name": "Golang"}
 	]
 }`,
 		StructName: "blog",
@@ -36,6 +37,7 @@ type PageView struct {
 	UseShortStruct bool
 	UseLocal       bool
 	UseOmitempty   bool
+	lastTimeKey    int64
 }
 
 // Render implements the vecty.Component interface.
@@ -58,7 +60,7 @@ func (p *PageView) Render() *vecty.HTML {
 						vecty.Text(p.Input),
 						event.Input(func(e *vecty.Event) {
 							p.Input = e.Target.Get("value").String()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -71,7 +73,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Type(prop.TypeText),
 						event.Input(func(e *vecty.Event) {
 							p.StructName = e.Target.Get("value").String()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -84,7 +86,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Type(prop.TypeText),
 						event.Input(func(e *vecty.Event) {
 							p.Prefix = e.Target.Get("value").String()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -97,7 +99,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Type(prop.TypeText),
 						event.Input(func(e *vecty.Event) {
 							p.Suffix = e.Target.Get("value").String()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -111,7 +113,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Checked(p.UseOmitempty),
 						event.Change(func(e *vecty.Event) {
 							p.UseOmitempty = e.Target.Get("checked").Bool()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -125,7 +127,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Checked(p.UseShortStruct),
 						event.Change(func(e *vecty.Event) {
 							p.UseShortStruct = e.Target.Get("checked").Bool()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -139,7 +141,7 @@ func (p *PageView) Render() *vecty.HTML {
 						prop.Checked(p.UseLocal),
 						event.Change(func(e *vecty.Event) {
 							p.UseLocal = e.Target.Get("checked").Bool()
-							vecty.Rerender(p)
+							p.Rerender()
 						}),
 					),
 				),
@@ -177,6 +179,18 @@ func (p *PageView) Render() *vecty.HTML {
 		),
 	)
 
+}
+
+// Rerender is rerender and debounce
+func (p *PageView) Rerender() {
+	timeKey := time.Now().UnixNano()
+	p.lastTimeKey = timeKey
+	go func() {
+		time.Sleep(800 * time.Millisecond)
+		if timeKey == p.lastTimeKey {
+			vecty.Rerender(p)
+		}
+	}()
 }
 
 // StructObject is output values.
