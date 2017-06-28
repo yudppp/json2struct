@@ -283,11 +283,15 @@ func (p *Propety) String() string {
 	case reflect.Slice, reflect.Array:
 		kind = "[]interface{}"
 		if p.Refs.Name != "" && len(p.Refs.Props) != 0 {
-			kind = fmt.Sprintf("[]%s", p.Refs.Name)
+			if len(p.Refs.Refs()) == 0 && len(p.Refs.Props) == 1 {
+				if p.Refs.Props[0].Kind != reflect.Interface {
+					kind = fmt.Sprintf("[]%s", p.Refs.Props[0].Kind)
+				}
+			} else {
+				kind = fmt.Sprintf("[]%s", p.Refs.Name)
+			}
 		}
-		if len(p.Refs.Refs()) == 0 && len(p.Refs.Props) == 1 {
-			kind = fmt.Sprintf("[]%s", p.Refs.Props[0].Kind)
-		}
+
 	case reflect.Map:
 		if p.Refs.Name != "" {
 			kind = p.Refs.Name

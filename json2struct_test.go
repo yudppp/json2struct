@@ -121,6 +121,18 @@ type DataCategory struct {
 }`,
 	},
 	TestCase{
+		Input: `{"categories": [1]}`,
+		Expected: `type Data struct {
+	Categories []int 'json:"categories"'
+}`,
+	},
+	TestCase{
+		Input: `{"categories": [1,"abc"]}`,
+		Expected: `type Data struct {
+	Categories []interface{} 'json:"categories"'
+}`,
+	},
+	TestCase{
 		Input: `{"categories": null}`,
 		Expected: `type Data struct {
 	Categories interface{} 'json:"categories"'
@@ -178,7 +190,7 @@ func TestParse(t *testing.T) {
 		expected := strings.Replace(v.Expected, "'", "`", -1)
 		actual, _ := Parse(strings.NewReader(v.Input), v.InputOption)
 		if actual != expected {
-			t.Errorf("\ngot:\n%v\nwant:\n%v", actual, expected)
+			t.Errorf("\ninput:\n%v\ngot:\n%v\nwant:\n%v", v.Input, actual, expected)
 		}
 	}
 }
