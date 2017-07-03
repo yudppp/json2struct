@@ -39,6 +39,7 @@ type Options struct {
 	UseOmitempty   bool
 	UseShortStruct bool
 	UseLocal       bool
+	UseExample     bool
 	Name           string
 	Prefix         string
 	Suffix         string
@@ -115,7 +116,7 @@ func (w *Walker) walk(spath, name string, data interface{}, parent *Structure) {
 			kind = getNumberKind(v.Float())
 		}
 		w.logln(name, kind)
-		parent.AddPropety(name, kind, nil)
+		parent.AddPropety(name, kind, v.Interface(), nil)
 	case Array:
 		spath = fmt.Sprintf("%s[]", spath)
 		w.logln(name)
@@ -129,7 +130,7 @@ func (w *Walker) walk(spath, name string, data interface{}, parent *Structure) {
 		if parent == nil {
 			w.structure = current
 		} else {
-			parent.AddPropety(name, reflect.Array, current)
+			parent.AddPropety(name, reflect.Array, list, current)
 		}
 		w.logln("]")
 	case Hash:
@@ -144,10 +145,10 @@ func (w *Walker) walk(spath, name string, data interface{}, parent *Structure) {
 		if parent == nil {
 			w.structure = current
 		} else {
-			parent.AddPropety(name, reflect.Map, current)
+			parent.AddPropety(name, reflect.Map, nil, current)
 		}
 	case Invalid:
-		parent.AddPropety(name, reflect.Interface, nil)
+		parent.AddPropety(name, reflect.Interface, nil, nil)
 	}
 	return
 }
@@ -161,9 +162,10 @@ type Structure struct {
 type Props []Propety
 
 type Propety struct {
-	Name string
-	Kind reflect.Kind
-	Refs *Structure `json:",omitempty"`
+	Name  string
+	Kind  reflect.Kind
+	Value interface{}
+	Refs  *Structure `json:",omitempty"`
 }
 
 func NewStructure(spath, name string) *Structure {
@@ -199,7 +201,7 @@ func SpathToName(spath, name string) string {
 	return strings.Join(result, "")
 }
 
-func (s *Structure) AddPropety(name string, kind reflect.Kind, refs *Structure) {
+func (s *Structure) AddPropety(name string, kind reflect.Kind, val interface{}, refs *Structure) {
 	for i, prop := range s.Props {
 		if prop.Name != name {
 			continue
@@ -221,12 +223,12 @@ func (s *Structure) AddPropety(name string, kind reflect.Kind, refs *Structure) 
 				return
 			}
 			for _, p := range refs.Props {
-				prop.Refs.AddPropety(p.Name, p.Kind, p.Refs)
+				prop.Refs.AddPropety(p.Name, p.Kind, val, p.Refs)
 			}
 		}
 		return
 	}
-	prop := Propety{Name: name, Kind: kind}
+	prop := Propety{Name: name, Kind: kind, Value: val}
 	if refs != nil {
 		prop.Refs = refs
 	}
@@ -277,6 +279,7 @@ func (s *Structure) Refs() []*Structure {
 
 func (p *Propety) String() string {
 	kind := "interface{}"
+	isStruct := false
 	switch p.Kind {
 	case reflect.String, reflect.Bool, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr, reflect.Float32, reflect.Float64, reflect.Complex64, reflect.Complex128:
 		kind = p.Kind.String()
@@ -289,12 +292,14 @@ func (p *Propety) String() string {
 				}
 			} else {
 				kind = fmt.Sprintf("[]%s", p.Refs.Name)
+				isStruct = true
 			}
 		}
 
 	case reflect.Map:
 		if p.Refs.Name != "" {
 			kind = p.Refs.Name
+			isStruct = true
 			if option.UseOmitempty {
 				kind = fmt.Sprintf("*%s", kind)
 			}
@@ -304,11 +309,25 @@ func (p *Propety) String() string {
 	if option.UseOmitempty {
 		jsonOption = ",omitempty"
 	}
+	exampleOption := ""
+	if option.UseExample && p.Value != nil && !isStruct {
+		list, ok := p.Value.([]interface{})
+		if ok {
+			strs := make([]string, len(list))
+			for i, v := range list {
+				strs[i] = fmt.Sprint(v)
+			}
+			p.Value = strings.Join(strs, ",")
+		}
+		if p.Value != "" {
+			exampleOption = fmt.Sprintf(" example:\"%v\"", p.Value)
+		}
+	}
 	propName := swag.ToGoName(p.Name)
 	if option.UseLocal {
 		propName = swag.ToVarName(propName)
 	}
-	return fmt.Sprintf("\t%s %s `json:\"%s%s\"`", propName, kind, p.Name, jsonOption)
+	return fmt.Sprintf("\t%s %s `json:\"%s%s\"%s`", propName, kind, p.Name, jsonOption, exampleOption)
 }
 
 func (p Props) Len() int {

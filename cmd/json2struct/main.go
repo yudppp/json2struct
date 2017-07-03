@@ -14,6 +14,7 @@ var (
 	omitempty = flag.Bool("omitempty", false, "Set omitempty mode")
 	short     = flag.Bool("short", false, "Set short struct name mode")
 	local     = flag.Bool("local", false, "Use local struct mode")
+	example   = flag.Bool("example", false, "Use example tag mode")
 	prefix    = flag.String("prefix", "", "Set struct name prefix")
 	suffix    = flag.String("suffix", "", "Set struct name suffix")
 	name      = flag.String("name", json2struct.DefaultStructName, "Set struct name")
@@ -26,6 +27,7 @@ func main() {
 		UseOmitempty:   *omitempty,
 		UseShortStruct: *short,
 		UseLocal:       *local,
+		UseExample:     *example,
 		Prefix:         *prefix,
 		Suffix:         *suffix,
 		Name:           strings.ToLower(*name),

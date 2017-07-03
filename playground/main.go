@@ -37,6 +37,7 @@ type PageView struct {
 	UseShortStruct bool
 	UseLocal       bool
 	UseOmitempty   bool
+	UseExampleTag  bool
 	lastTimeKey    int64
 }
 
@@ -145,6 +146,20 @@ func (p *PageView) Render() *vecty.HTML {
 						}),
 					),
 				),
+				elem.Div(
+					vecty.Tag("label",
+						vecty.Text("example tag mode"),
+					),
+					elem.Input(
+						prop.Class("toggle"),
+						prop.Type(prop.TypeCheckbox),
+						prop.Checked(p.UseExampleTag),
+						event.Change(func(e *vecty.Event) {
+							p.UseExampleTag = e.Target.Get("checked").Bool()
+							p.Rerender()
+						}),
+					),
+				),
 			),
 			elem.Div(
 				prop.Class("col output"),
@@ -163,6 +178,7 @@ func (p *PageView) Render() *vecty.HTML {
 								UseShortStruct: p.UseShortStruct,
 								UseLocal:       p.UseLocal,
 								UseOmitempty:   p.UseOmitempty,
+								UseExample:     p.UseExampleTag,
 							},
 						},
 					),
@@ -196,14 +212,8 @@ func (p *PageView) Rerender() {
 // StructObject is output values.
 type StructObject struct {
 	vecty.Core
-	Input          string
-	Option         json2struct.Options
-	StructName     string
-	Prefix         string
-	Suffix         string
-	UseShortStruct bool
-	UseLocal       bool
-	UseOmitempty   bool
+	Input  string
+	Option json2struct.Options
 }
 
 // Render implements the vecty.Component interface.

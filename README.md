@@ -40,3 +40,4 @@ type BlogCategory struct {
 | short | Set short struct name mode |
 | local | Use local struct mode |
 | omitempty | Set omitempty mode |
+| example | Use example tag (https://github.com/yudppp/structs)|

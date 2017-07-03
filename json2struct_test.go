@@ -183,6 +183,29 @@ type Post struct {
 	Title         string 'json:"title"'
 }`,
 	},
+	TestCase{
+		Input:       `[{"post": {"status": 1, "accept_comment": true, "title": "hello world", "tags": [1,2,4]}, "categories": [{"name": "aws", "num": 123}, {"name": 123, "num": 3.14}], "url": "http://blog.yudppp.com", "profile_image_url": "http://blog.yudppp.com/img/profile.gif", "comments": []}]`,
+		InputOption: Options{UseExample: true, Name: "json"},
+		Expected: `type JSON struct {
+	Categories      []JSONCategory 'json:"categories"'
+	Comments        []interface{}  'json:"comments"'
+	Post            JSONPost       'json:"post"'
+	ProfileImageURL string         'json:"profile_image_url" example:"http://blog.yudppp.com/img/profile.gif"'
+	URL             string         'json:"url" example:"http://blog.yudppp.com"'
+}
+
+type JSONCategory struct {
+	Name interface{} 'json:"name"'
+	Num  float64     'json:"num"'
+}
+
+type JSONPost struct {
+	AcceptComment bool   'json:"accept_comment" example:"true"'
+	Status        int    'json:"status" example:"1"'
+	Tags          []int  'json:"tags" example:"1,2,4"'
+	Title         string 'json:"title" example:"hello world"'
+}`,
+	},
 }
 
 func TestParse(t *testing.T) {
