@@ -4,10 +4,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
-	"github.com/gopherjs/vecty/prop"
+	"github.com/hexops/vecty"
+	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
+	"github.com/hexops/vecty/prop"
 	"github.com/yudppp/json2struct"
 )
 
@@ -42,22 +42,22 @@ type PageView struct {
 }
 
 // Render implements the vecty.Component interface.
-func (p *PageView) Render() *vecty.HTML {
+func (p *PageView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		elem.Header(
-			prop.Class("header"),
+			vecty.Property("class", "header"),
 			vecty.Text("json2struct playground"),
 		),
 		elem.Div(
-			prop.Class("wrapper"),
+			vecty.Property("class", "wrapper"),
 			elem.Div(
-				prop.Class("col input"),
+				vecty.Property("class", "col input"),
 				elem.Div(
 					vecty.Tag("label",
 						vecty.Text("input json"),
 					),
 					elem.TextArea(
-						prop.Class("u-full-width"),
+						vecty.Property("class", "u-full-width"),
 						vecty.Text(p.Input),
 						event.Input(func(e *vecty.Event) {
 							p.Input = e.Target.Get("value").String()
@@ -109,7 +109,7 @@ func (p *PageView) Render() *vecty.HTML {
 						vecty.Text("omitempty mode"),
 					),
 					elem.Input(
-						prop.Class("toggle"),
+						vecty.Property("class", "toggle"),
 						prop.Type(prop.TypeCheckbox),
 						prop.Checked(p.UseOmitempty),
 						event.Change(func(e *vecty.Event) {
@@ -123,7 +123,7 @@ func (p *PageView) Render() *vecty.HTML {
 						vecty.Text("short mode"),
 					),
 					elem.Input(
-						prop.Class("toggle"),
+						vecty.Property("class", "toggle"),
 						prop.Type(prop.TypeCheckbox),
 						prop.Checked(p.UseShortStruct),
 						event.Change(func(e *vecty.Event) {
@@ -137,7 +137,7 @@ func (p *PageView) Render() *vecty.HTML {
 						vecty.Text("local mode"),
 					),
 					elem.Input(
-						prop.Class("toggle"),
+						vecty.Property("class", "toggle"),
 						prop.Type(prop.TypeCheckbox),
 						prop.Checked(p.UseLocal),
 						event.Change(func(e *vecty.Event) {
@@ -151,7 +151,7 @@ func (p *PageView) Render() *vecty.HTML {
 						vecty.Text("example tag mode"),
 					),
 					elem.Input(
-						prop.Class("toggle"),
+						vecty.Property("class", "toggle"),
 						prop.Type(prop.TypeCheckbox),
 						prop.Checked(p.UseExampleTag),
 						event.Change(func(e *vecty.Event) {
@@ -162,7 +162,7 @@ func (p *PageView) Render() *vecty.HTML {
 				),
 			),
 			elem.Div(
-				prop.Class("col output"),
+				vecty.Property("class", "col output"),
 				vecty.Tag("label",
 					vecty.Text("output struct"),
 				),
@@ -186,7 +186,7 @@ func (p *PageView) Render() *vecty.HTML {
 			),
 		),
 		elem.Footer(
-			prop.Class("footer"),
+			vecty.Property("class", "footer"),
 			vecty.Text("Used by "),
 			elem.Anchor(
 				prop.Href("https://github.com/yudppp/json2struct"),

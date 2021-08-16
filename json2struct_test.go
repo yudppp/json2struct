@@ -13,34 +13,34 @@ type TestCase struct {
 }
 
 var testCases = []TestCase{
-	TestCase{
+	{
 		Input: `{"text": "hello"}`,
 		Expected: `type Data struct {
 	Text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `[{"id": 123}]`,
 		InputOption: Options{Name: "Categories"},
 		Expected: `type Category struct {
 	ID int 'json:"id"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `[{"name": 123},{"name": 3.14}]`,
 		InputOption: Options{Name: "Tags"},
 		Expected: `type Tag struct {
 	Name float64 'json:"name"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `[{"name": 123},{"name": "stringer"}]`,
 		InputOption: Options{Name: "Tags"},
 		Expected: `type Tag struct {
 	Name interface{} 'json:"name"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"nest": {"text": "hello"}}`,
 		Expected: `type Data struct {
 	Nest DataNest 'json:"nest"'
@@ -50,7 +50,7 @@ type DataNest struct {
 	Text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{UseShortStruct: true},
 		Expected: `type Data struct {
@@ -61,7 +61,7 @@ type Nest struct {
 	Text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{UseLocal: true},
 		Expected: `type data struct {
@@ -72,7 +72,7 @@ type dataNest struct {
 	text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{UseOmitempty: true},
 		Expected: `type Data struct {
@@ -83,7 +83,7 @@ type DataNest struct {
 	Text string 'json:"text,omitempty"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{Prefix: "input"},
 		Expected: `type InputData struct {
@@ -94,7 +94,7 @@ type InputDataNest struct {
 	Text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `{"nest": {"text": "hello"}}`,
 		InputOption: Options{Suffix: "result"},
 		Expected: `type DataResult struct {
@@ -105,7 +105,7 @@ type DataNestResult struct {
 	Text string 'json:"text"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"categories": [{}]}`,
 		Expected: `type Data struct {
 	Categories []DataCategory 'json:"categories"'
@@ -114,31 +114,31 @@ type DataNestResult struct {
 type DataCategory struct {
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"categories": []}`,
 		Expected: `type Data struct {
 	Categories []interface{} 'json:"categories"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"categories": [1]}`,
 		Expected: `type Data struct {
 	Categories []int 'json:"categories"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"categories": [1,"abc"]}`,
 		Expected: `type Data struct {
 	Categories []interface{} 'json:"categories"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"categories": null}`,
 		Expected: `type Data struct {
 	Categories interface{} 'json:"categories"'
 }`,
 	},
-	TestCase{
+	{
 		Input: `{"post": {"status": 1, "accept_comment": true, "title": "hello world", "tags": [1,2,4]}, "categories": [{"name": "aws", "num": 123}, {"name": 123, "num": 3.14}], "url": "http://blog.yudppp.com", "profile_image_url": "http://blog.yudppp.com/img/profile.gif", "comments": []}`,
 		Expected: `type Data struct {
 	Categories      []DataCategory 'json:"categories"'
@@ -160,7 +160,7 @@ type DataPost struct {
 	Title         string 'json:"title"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `[{"post": {"status": 1, "accept_comment": true, "title": "hello world", "tags": [1,2,4]}, "categories": [{"name": "aws", "num": 123}, {"name": 123, "num": 3.14}], "url": "http://blog.yudppp.com", "profile_image_url": "http://blog.yudppp.com/img/profile.gif", "comments": []}]`,
 		InputOption: Options{UseShortStruct: true, Name: "json"},
 		Expected: `type JSON struct {
@@ -183,7 +183,7 @@ type Post struct {
 	Title         string 'json:"title"'
 }`,
 	},
-	TestCase{
+	{
 		Input:       `[{"post": {"status": 1, "accept_comment": true, "title": "hello world", "tags": [1,2,4]}, "categories": [{"name": "aws", "num": 123}, {"name": 123, "num": 3.14}], "url": "http://blog.yudppp.com", "profile_image_url": "http://blog.yudppp.com/img/profile.gif", "comments": []}]`,
 		InputOption: Options{UseExample: true, Name: "json"},
 		Expected: `type JSON struct {

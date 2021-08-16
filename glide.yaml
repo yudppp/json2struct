@@ -1,5 +1,0 @@
-package: github.com/yudppp/json2struct
-import:
-- package: github.com/c9s/inflect
-- package: github.com/go-openapi/swag
-- package: github.com/mailru/easyjson
