@@ -253,7 +253,7 @@ func (s *Structure) String() string {
 	for i, prop := range s.Props {
 		props[i] = prop.String()
 	}
-	str := fmt.Sprintf("type %s struct{\n%v\n}", s.Name, strings.Join(props, "\n"))
+	str := fmt.Sprintf("type %s struct {\n%v\n}", s.Name, strings.Join(props, "\n"))
 
 	formated, err := format.Source([]byte(str))
 	if err != nil {
